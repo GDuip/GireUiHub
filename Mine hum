@@ -1,0 +1,154 @@
+-- Load DrRay Library
+local Rayfield = loadstring(game:HttpGet('https://raw.githubusercontent.com/SiriusSoftwareLtd/Rayfield/main/source.lua'))()
+
+-- Function to toggle aimbot functionality
+local aimbotEnabled = false
+local function toggleAimbot()
+    aimbotEnabled = not aimbotEnabled
+    if aimbotEnabled then
+        print("Aimbot enabled")
+        -- Add your aimbot activation logic here
+        -- Example: Load aimbot script or enable aimbot features
+    else
+        print("Aimbot disabled")
+        -- Add your aimbot deactivation logic here
+        -- Example: Disable aimbot features
+    end
+end
+
+-- Create GUI window
+local Window = Rayfield:CreateWindow({
+    Name = "Blade Ball - Furk Ultra",
+    LoadingTitle = "Blade Ball - Furk Ultra",
+    LoadingSubtitle = "Brought to you by Furk Ultra",
+})
+
+-- Create a tab for main GUI's
+local Tab = Window:CreateTab("Main GUI's")
+
+-- Create a section for Blade Ball main GUI's
+local Section = Tab:CreateSection("Blade Ball Main GUI's")
+
+-- Add existing buttons
+Tab:CreateButton({
+    Name = "#1 - Inferno Hub",
+    Callback = function()
+        loadstring(game:HttpGet("https://github.com/SadlekAski/Scripts/raw/main/Blade%20Ball/Equip%20any%20ability.lua"))()
+    end,
+})
+
+Tab:CreateButton({
+    Name = "OP - W-azure Hub",
+    Callback = function()
+        getgenv().Mode = "AI" -- "AimOnly","Rage", "AI"
+        -- Add your W-azure Hub logic here
+        loadstring(game:HttpGet("https://api.luarmor.net/files/v3/loaders/fd07660d92cb26891e9acfab9f0c6ba4.lua"))()
+    end,
+})
+
+Tab:CreateButton({
+    Name = "NEW - Bedol Hub",
+    Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/nqxlOfc/Loaders/main/Blade_Ball.lua"))()
+    end,
+})
+
+Tab:CreateButton({
+    Name = "Yon V3 Hub",
+    Callback = function()
+        local UILib = loadstring(game:HttpGet('https://raw.githubusercontent.com/StepBroFurious/Script/main/HydraHubUi.lua'))()
+        local Window = UILib.new("Blade Ball", game.Players.LocalPlayer.UserId, "NXT. Member")
+        local Category1 = Window:Category("Main", "http://www.roblox.com/asset/?id=8395621517")
+        Category1:Button({
+            Title = "Circle Parry",
+            ButtonName = "Start",
+            Description = "X to stop",
+        }, function(value)
+            getgenv().visualizer = true
+            loadstring(game:HttpGet("https://raw.githubusercontent.com/1f0yt/community/main/RedCircleBlock"))()
+        end)
+        Category1:Button({
+            Title = "AI Parry",
+            ButtonName = "Start",
+            Description = "AI",
+        }, function(value)
+            getgenv().Mode = "AI" -- "AimOnly","Rage", "AI"
+            -- Add your AI Parry logic here
+            loadstring(game:HttpGet("https://api.luarmor.net/files/v3/loaders/fd07660d92cb26891e9acfab9f0c6ba4.lua"))()
+        end)
+    end,
+})
+
+Tab:CreateButton({
+    Name = "Nova Hub",
+    Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/Synergy-Networks/products/main/ProjectNova/loader.lua",true))()
+    end,
+})
+
+Tab:CreateButton({
+    Name = "Alienware Hub",
+    Callback = function()
+        loadstring(game:HttpGet(("https://raw.githubusercontent.com/romkich09/Ball/main/Balde")))()
+    end,
+})
+
+Tab:CreateButton({
+    Name = "R3TH-PRIV Hub",
+    Callback = function()
+        loadstring(game:HttpGet('https://raw.githubusercontent.com/R3TH-PRIV/R3THPRIV/main/loader.lua'))()
+    end,
+})
+
+Tab:CreateButton({
+    Name = "Lightux Hub",
+    Callback = function()
+        loadstring(game:HttpGet(("https://raw.githubusercontent.com/zeuise0002/SSSWWW222/main/README.md")))()
+    end,
+})
+
+Tab:CreateButton({
+    Name = "Red Circle Auto Parry",
+    Callback = function()
+        loadstring(game:HttpGet(("https://raw.githubusercontent.com/UltraStuff/scripts2/main/bladered")))()
+    end,
+})
+
+Tab:CreateButton({
+    Name = "LuaF Hub",
+    Callback = function()
+        loadstring(game:HttpGet(("https://raw.githubusercontent.com/UltraStuff/scripts2/main/bladelua")))()
+    end,
+})
+
+-- Add Aimbot button
+Tab:CreateButton({
+    Name = "Toggle Aimbot",
+    Callback = toggleAimbot,
+end
+})
+-- Create a tab for main GUI's
+local Tab = Window:CreateTab("sec GUI's")
+
+-- Create a section for Blade Ball main GUI's
+local Section = Tab:CreateSection("mine GUI's")
+
+Tab:CreateButton({
+    Name = "Toggle GodAP",
+    Callback = function()
+   loadstring(game:HttpGet("raw.githubusercontent.com/GDuip/GireUiHub/main/GodParry"))() 
+ end,
+})
+
+Tab:CreateButton({
+    Name = "Toggle GodAP",
+    Callback = function()loadstring(game:HttpGet("https://raw.githubusercontent.com/GDuip/GireUiHub/main/MVS"))()
+ end,
+})
+
+Tab:CreateButton({
+    Name = "Toggle GodAP",
+    Callback = function()loadstring(game:HttpGet("https://raw.githubusercontent.com/GDuip/GireUiHub/main
+MANUALSPAM"))()
+  end,
+})
