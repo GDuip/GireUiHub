@@ -1,0 +1,62 @@
+local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+local player = Players.LocalPlayer
+
+local gui = Instance.new("ScreenGui")
+gui.Parent = player.PlayerGui
+
+local frame = Instance.new("Frame")
+frame.Size = UDim2.new(0.9, 0, 0.9, 0)
+frame.Position = UDim2.new(0.05, 0, 0.05, 0)
+frame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+frame.BorderSizePixel = 0
+frame.Parent = gui
+
+local title = Instance.new("TextLabel")
+title.Text = "ESP-FOV-NoClip"
+title.TextColor3 = Color3.fromRGB(255, 255, 255)
+title.TextSize = 24
+title.Size = UDim2.new(1, 0, 0.1, 0)
+title.Position = UDim2.new(0, 0, 0, 0)
+title.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+title.Parent = frame
+
+-- FOV Slider
+local fovSlider = Instance.new("TextButton")
+fovSlider.Text = "Adjust FOV"
+fovSlider.TextColor3 = Color3.fromRGB(255, 255, 255)
+fovSlider.TextSize = 18
+fovSlider.Size = UDim2.new(0.8, 0, 0.1, 0)
+fovSlider.Position = UDim2.new(0.1, 0, 0.25, 0)
+fovSlider.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+fovSlider.Parent = frame
+
+local fovValue = Instance.new("TextLabel")
+fovValue.Text = "FOV: 70"
+fovValue.TextColor3 = Color3.fromRGB(255, 255, 255)
+fovValue.TextSize = 18
+fovValue.Size = UDim2.new(0.2, 0, 0.1, 0)
+fovValue.Position = UDim2.new(0.9, 0, 0.25, 0)
+fovValue.Parent = frame
+
+-- ESP Box Lines (Mobile-friendly adjustments needed)
+-- NoClip Button (Mobile-friendly adjustments needed)
+
+local touchControls = player.PlayerGui:WaitForChild("TouchGui")
+local toggleButton = touchControls:WaitForChild("ToggleButton")
+
+local flying = false
+
+toggleButton.InputBegan:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.Touch then
+        flying = not flying
+        if flying then
+            game:GetService("RunService").Stepped:Connect(function()
+                if flying then
+                    player.Character.Humanoid:ChangeState(11)
+                end
+            end)
+        end
+    end
+end)
