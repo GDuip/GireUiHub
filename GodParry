@@ -1,13 +1,6 @@
-getgenv().Paws = {
-        ["AutoParry"] = true,
-        ["PingBased"] = true,
-        ["PingBasedOffset"] = 0,
-        ["DistanceToParry"] = 0.5,
-        ["BallSpeedCheck"] = true,
-}
-
 local Players = game:GetService("Players")
 local Player = Players.LocalPlayer or Players.PlayerAdded:Wait()
+local SocialService = game:GetService("SocialService")
 local ReplicatedPaw = game:GetService("ReplicatedStorage")
 
 local Paws = ReplicatedPaw:WaitForChild("Remotes", 9e9)
@@ -15,7 +8,7 @@ local PawsBalls = workspace:WaitForChild("Balls", 9e9)
 local PawsTable = getgenv().Paws
 
 local function IsTheTarget()
-        return Player.Character:FindFirstChild("Highlight")
+    return Player.Character:FindFirstChild("Highlight")
 end
 
 local function FindBall()
@@ -28,28 +21,101 @@ local function FindBall()
     return RealBall
 end
 
+local function Parry(remote, entityAim, direction)
+    if not entityAim or not direction then
+        warn("Cannot parry: Invalid entity or direction")
+        return
+    end
+
+    local targetPosition = workspace.CurrentCamera:WorldToScreenPoint(entityAim.Position)
+    local finalDirection
+
+    if direction == "High" then
+        finalDirection = CFrame.new(workspace.CurrentCamera.CFrame.Position, Vector3.new(0, 1000, 0))
+    elseif direction == "Random" then
+        finalDirection = CFrame.new(
+            workspace.CurrentCamera.CFrame.Position,
+            Vector3.new(math.random(-1000, 1000), math.random(-100, 1000), math.random(-1000, 1000))
+        )
+    else
+        finalDirection = CFrame.new() -- Default direction or custom logic
+    end
+
+    remote:FireServer(
+        0.5,
+        finalDirection,
+        {[entityAim.Name] = targetPosition},
+        {targetPosition.X, targetPosition.Y},
+        false
+    )
+end
+
 game:GetService("RunService").PreRender:connect(function()
-        if not FindBall() then 
-                return
-        end
-        local Ball = FindBall()
-        
-        local BallPosition = Ball.Position
-        
-        local BallVelocity = Ball.AssemblyLinearVelocity.Magnitude
-        
-        local Distance = Player:DistanceFromCharacter(BallPosition)
-        
-        local Ping = BallVelocity * (game.Stats.Network.ServerStatsItem["Data Ping"]:GetValue() / 1000)
-        
-        if PawsTable.PingBased then
+    if not FindBall() then 
+        return
+    end
+    local Ball = FindBall()
+    
+    local BallPosition = Ball.Position
+    
+    local BallVelocity = Ball.AssemblyLinearVelocity.Magnitude
+    
+    local Distance = Player:DistanceFromCharacter(BallPosition)
+    
+    local Ping = BallVelocity * (game.Stats.Network.ServerStatsItem["Data Ping"]:GetValue() / 1000)
+    
+    if PawsTable.PingBased then
         Distance -= Ping + PawsTable.PingBasedOffset
-        end
-        
-        if PawsTable.BallSpeedCheck and BallVelocity == 0 then return
-        end
-        
-        if (Distance / BallVelocity) <= PawsTable.DistanceToParry and IsTheTarget() and PawsTable.AutoParry then
-               Paws:WaitForChild("ParryButtonPress"):Fire()
-           end
+    end
+    
+    if PawsTable.BallSpeedCheck and BallVelocity == 0 then 
+        return
+    end
+    
+    if (Distance / BallVelocity) <= PawsTable.DistanceToParry and IsTheTarget() and PawsTable.AutoParry then
+        Paws:WaitForChild("ParryButtonPress"):Fire()
+    end
 end)
+
+local ParryService = {
+    entityAim = nil,
+    direction = 'High', -- Default direction
+    remote = SocialService.RemoteEvent,
+    lastParryTime = 0,
+    parryCooldown = 2, -- Cooldown duration in seconds
+    comboCount = 0,
+    maxComboCount = 3, -- Maximum number of combo parries
+    comboWindow = 0.5, -- Time window for combo parries in seconds
+
+    canParry = function(self)
+        local currentTime = tick()
+        return (currentTime - self.lastParryTime >= self.parryCooldown)
+    end,
+
+    parry = function(self)
+        if not self.entityAim then
+            warn("Cannot parry: entityAim is nil")
+            return
+        end
+
+        if not self:canParry() then
+            warn("Cannot parry: Cooldown in effect")
+            return
+        end
+
+        -- Timed parry logic
+        if self.comboCount > 0 and tick() - self.lastParryTime <= self.comboWindow then
+            -- Successful combo parry
+            self.comboCount = self.comboCount - 1
+            print("Combo Parry! Remaining: " .. self.comboCount)
+        else
+            self.comboCount = self.maxComboCount - 1
+            print("First Parry in Combo!")
+        end
+
+        Parry(self.remote, self.entityAim, self.direction)
+        self.lastParryTime = tick() -- Update last parry time
+    end,
+}
+
+return ParryService
