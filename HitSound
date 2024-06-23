@@ -1,4 +1,4 @@
-```lua
+lua
 local Debris = game:GetService('Debris')
 
 local HitSound = {}
@@ -22,4 +22,3 @@ end
 
 
 return HitSound
-```
