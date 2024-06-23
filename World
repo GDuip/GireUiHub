@@ -1,4 +1,4 @@
-```lua
+lua
 local Player = loadstring(game:HttpGet('https://raw.githubusercontent.com/aviorety/Aries/main/Modules/Player.lua'))()
 
 local World = {}
@@ -61,4 +61,3 @@ end
 
 
 return World
-```
